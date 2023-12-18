@@ -20,8 +20,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/musicDB', {
 
 
 // Define routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.hbs'));
+app.get('/msd', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
 app.get('/about', (req, res) => {
@@ -39,7 +39,7 @@ app.get('/contact', (req, res) => {
 app.get('/tracks', async (req, res) => {
   try {
     const musicData = await Music.find().lean();
-    res.render('index', { musicData });
+    res.render('tracks.ejs', { musicData });
   } catch (error) {
     console.error(error);
     res.status(500).render('error', { error });
