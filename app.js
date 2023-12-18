@@ -5,17 +5,11 @@ const exphbs = require('express-handlebars');
 const Music = require('./models/musicModel');
 
 const app = express();
-
-app.engine(
-  'hbs',
-  exphbs({
-    extname: '.hbs',
-    defaultLayout: 'main',
-    layoutsDir: path.join(__dirname, 'views/layouts/'),
-  })
-);
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'views'));
+app.engine('hbs', exphbs({ extname: '.hbs', defaultLayout: 'main', layoutsDir: path.join(__dirname, '/views/layouts/') }));
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 mongoose.connect('mongodb://127.0.0.1:27017/musicDB', {
   useNewUrlParser: true,
@@ -24,7 +18,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/musicDB', {
   socketTimeoutMS: 45000,
 });
 
-app.use(express.static('views'));
 
 // Define routes
 app.get('/', (req, res) => {
