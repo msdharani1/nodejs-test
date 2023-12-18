@@ -6,12 +6,17 @@ const Music = require('./models/musicModel');
 
 const app = express();
 
-// Set up handlebars engine
-app.engine('hbs', exphbs({ extname: '.hbs', defaultLayout: 'main', layoutsDir: path.join(__dirname, '/views/layouts/') }).engine);
+app.engine(
+  'hbs',
+  exphbs({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, 'views/layouts/'),
+  })
+);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-// MongoDB connection setup
 mongoose.connect('mongodb://127.0.0.1:27017/musicDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -19,22 +24,12 @@ mongoose.connect('mongodb://127.0.0.1:27017/musicDB', {
   socketTimeoutMS: 45000,
 });
 
-// Static files setup
 app.use(express.static('views'));
 
 // Define routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.hbs'));
 });
-
-// ... (other routes)
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
 
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'about.html'));
